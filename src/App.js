@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import Board from './Board';
+import Board from './components/Board';
+
 
 const getLine = (pos, index) => {
     const lines = [
@@ -31,46 +32,30 @@ const getLine = (pos, index) => {
 class Game extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            history: [
-                {
-                    squares: Array(20 * 20).fill(null),
-                    pos: null,
-                    xIsNext: true,
-                    coordinates: null
-                }
-            ],
-            stepNumber: 0,
-            xIsNext: true,
-            reverse: false
-        };
+        const { actDefaultHistory, actDefaultStepNumber, actXIsNext, actDefaultReverse } = this.props;
+        actDefaultHistory();
+        actDefaultStepNumber();
+        actXIsNext();
+        actDefaultReverse();
         this.winningLine = null;
         this.winningPos = null;
         this.stepChoose = 0;
     }
 
     handlePlayAgain() {
+        const { actDefaultHistory, actDefaultStepNumber, actXIsNext, actDefaultReverse } = this.props;
+        actDefaultHistory();
+        actDefaultStepNumber();
+        actXIsNext();
+        actDefaultReverse();
         this.winningLine = null;
         this.winningPos = null;
-        this.setState({
-            history: [
-                {
-                    squares: Array(20 * 20).fill(null),
-                    pos: null,
-                    xIsNext: true,
-                    coordinates: null
-                }
-            ],
-            stepNumber: 0,
-            xIsNext: true,
-            reverse: false
-        });
         this.stepChoose = 0;
     }
 
     handleClick(i) {
-        const { stepNumber, xIsNext } = this.state;
-        let { history } = this.state;
+        const { stepNumber, xIsNext, actConcatHistory, actChangeStepNumber, actChangeNext } = this.props;
+        let { history } = this.props;
         history = history.slice(0, stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
@@ -79,26 +64,16 @@ class Game extends React.Component {
             return;
         }
         squares[i] = xIsNext ? 'X' : 'O';
-        this.setState({
-            history: history.concat([
-                {
-                    squares,
-                    pos: i,
-                    xIsNext: !xIsNext,
-                    coordinates: "(".concat(i % 20, ", ").concat(Math.floor(i / 20), ")")
-                }
-            ]),
-            stepNumber: history.length,
-            xIsNext: !xIsNext
-        });
+        actConcatHistory(squares, i, xIsNext, stepNumber);
+        actChangeStepNumber(history.length);
+        actChangeNext(!xIsNext);
         this.stepChoose = history.length;
     }
 
     jumpTo(step) {
-        this.setState({
-            stepNumber: step,
-            xIsNext: step % 2 === 0
-        });
+        const { actChangeStepNumber, actChangeNext } = this.props;
+        actChangeStepNumber(step);
+        actChangeNext(step % 2 === 0);
         this.winningLine = null;
         this.winningPos = null;
         this.stepChoose = step;
@@ -222,24 +197,21 @@ class Game extends React.Component {
     }
 
     handleSort() {
-        const { reverse } = this.state;
-        this.setState({
-            reverse: !reverse
-        });
+        const { reverse, actChangeReverse } = this.props;
+        actChangeReverse(!reverse);
     }
 
     render() {
-        const { history, stepNumber, reverse, xIsNext } = this.state;
+        const { history, stepNumber, reverse, xIsNext } = this.props;
         const current = history[stepNumber];
         const winner = this.calculateWinner(current.squares, current.pos);
-
         let move = history.map((step, _move) => {
             const desc = _move
                 ? (step.xIsNext ? 'O ' : 'X ') + step.coordinates
                 : 'Go to game start';
             if (this.stepChoose === _move) {
                 return (
-                    <li key={_move.toString}>
+                    <li key={_move.toString()}>
                         <button type="button" onClick={() => this.jumpTo(_move)}>
                             <b className="fa fa-bold" aria-hidden="true">
                                 {desc}
@@ -249,7 +221,7 @@ class Game extends React.Component {
                 );
             }
             return (
-                <li key={_move.toString}>
+                <li key={_move.toString()}>
                     <button type="button" onClick={() => this.jumpTo(_move)}>{desc}</button>
                 </li>
             );
@@ -289,7 +261,7 @@ class Game extends React.Component {
                                 onClick={() => this.handlePlayAgain()}
                             >
                                 Play again
-              </button>
+                            </button>
                         </div>
                     </div>
                 </header>
@@ -299,6 +271,9 @@ class Game extends React.Component {
 }
 
 export default Game;
+
+
+
 
 
 
