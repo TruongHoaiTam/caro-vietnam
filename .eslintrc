@@ -15,7 +15,8 @@
     "no-console": "off",
     "no-param-reassign": 0,
     "import/prefer-default-export": 0,
-    "react/jsx-no-undef": 0
+    "react/jsx-no-undef": 0,
+    "react/jsx-props-no-spreading": 0
   },
   "globals": {
     "window": true,

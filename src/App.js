@@ -1,7 +1,7 @@
 import React from 'react';
+import { Button } from 'antd/lib/radio';
 import './App.css';
 import Board from './components/Board';
-
 
 const getLine = (pos, index) => {
     const lines = [
@@ -212,17 +212,17 @@ class Game extends React.Component {
             if (this.stepChoose === _move) {
                 return (
                     <li key={_move.toString()}>
-                        <button type="button" onClick={() => this.jumpTo(_move)}>
+                        <Button onClick={() => this.jumpTo(_move)}>
                             <b className="fa fa-bold" aria-hidden="true">
                                 {desc}
                             </b>
-                        </button>
+                        </Button>
                     </li>
                 );
             }
             return (
                 <li key={_move.toString()}>
-                    <button type="button" onClick={() => this.jumpTo(_move)}>{desc}</button>
+                    <Button onClick={() => this.jumpTo(_move)}>{desc}</Button>
                 </li>
             );
         });
@@ -242,9 +242,9 @@ class Game extends React.Component {
                     <div>
                         <div className="game-board">
                             <div className="status">{status}</div>
-                            <button type="button" onClick={() => this.handleSort()}>
+                            <Button onClick={() => this.handleSort()}>
                                 Sort
-                            </button>
+                            </Button>
                             <ol>{move}</ol>
                         </div>
                         <div className="game-info">
@@ -255,14 +255,14 @@ class Game extends React.Component {
                                 winningPos={this.winningPos}
                                 onClick={i => this.handleClick(i)}
                             />
-                            <button
-                                type="button"
+                            <Button
                                 className="play-again"
                                 onClick={() => this.handlePlayAgain()}
                             >
                                 Play again
-                            </button>
+                            </Button>
                         </div>
+
                     </div>
                 </header>
             </div>

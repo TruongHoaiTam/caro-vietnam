@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'antd';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Square extends React.Component {
@@ -7,21 +8,27 @@ class Square extends React.Component {
         if (isDetermined === false) {
             if (isChoose) {
                 return (
-                    <button type="button" className="square choose" onClick={onClick}>
-                        {value}
-                    </button>
+                    <Button type="primary" className="square choose" onClick={onClick}>
+                        <b className="fa fa-bold" aria-hidden="true">
+                            {value}
+                        </b>
+                    </Button>
                 );
             }
             return (
-                <button type="button" className="square" onClick={onClick}>
-                    {value}
-                </button>
+                <Button type="button" className="square" onClick={onClick}>
+                    <b className="fa fa-bold" aria-hidden="true">
+                        {value}
+                    </b>
+                </Button>
             );
         }
         return (
-            <button type="button" className="determinedSquare" onClick={onClick}>
-                {value}
-            </button>
+            <Button type="danger" className="determinedSquare" onClick={onClick}>
+                <b className="fa fa-bold" aria-hidden="true">
+                    {value}
+                </b>
+            </Button>
         );
     }
 }
