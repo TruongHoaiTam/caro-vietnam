@@ -1,48 +1,31 @@
 import { connect } from 'react-redux';
-import Game from "../App"
-import { actChangeNext, actXIsNext } from '../actions/xIsNext';
-import { actChangeReverse, actDefaultReverse } from '../actions/reverse';
-import { actChangeStepNumber, actDefaultStepNumber } from '../actions/stepNumber';
-import { actConcatHistory, actDefaultHistory } from '../actions/history';
+import Game from "../components/Game";
+import { actInitState, actHandleClick, actJumpTo, actHandleSort } from '../actions/Game'
 
 const mapStateToProps = state => ({
-    history: state.history,
-    stepNumber: state.stepNumber,
-    xIsNext: state.xIsNext,
-    reverse: state.reverse
+    history: state.Game.history,
+    stepNumber: state.Game.stepNumber,
+    xIsNext: state.Game.xIsNext,
+    reverse: state.Game.reverse,
+    bestPos: state.Game.bestPos
 });
 
 const mapDispatchToProps = dispatch => ({
-    actDefaultHistory: () => {
-        dispatch(actDefaultHistory());
+
+    actInitState: () => {
+        dispatch(actInitState());
     },
 
-    actDefaultStepNumber: () => {
-        dispatch(actDefaultStepNumber());
+    actHandleClick: (value) => {
+        dispatch(actHandleClick(value));
     },
 
-    actXIsNext: () => {
-        dispatch(actXIsNext());
+    actJumpTo: (step) => {
+        dispatch(actJumpTo(step));
     },
 
-    actDefaultReverse: () => {
-        dispatch(actDefaultReverse());
-    },
-
-    actConcatHistory: (squares, i, xIsNext, stepNumber) => {
-        dispatch(actConcatHistory(squares, i, xIsNext, stepNumber));
-    },
-
-    actChangeStepNumber: (step) => {
-        dispatch(actChangeStepNumber(step));
-    },
-
-    actChangeNext: (value) => {
-        dispatch(actChangeNext(value));
-    },
-
-    actChangeReverse: (value) => {
-        dispatch(actChangeReverse(value));
+    actHandleSort: (reverse) => {
+        dispatch(actHandleSort(reverse));
     }
 
 });

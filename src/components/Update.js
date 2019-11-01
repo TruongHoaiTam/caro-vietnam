@@ -1,10 +1,9 @@
 import React from "react";
 import { Form, Input, Button, Icon, Upload } from "antd";
 import "antd/dist/antd.css";
-import { callApiRegister } from "../utils/apiCaller";
 import "../index.css";
 
-class RegistrationForm extends React.Component {
+class UpdateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,17 +14,30 @@ class RegistrationForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         const { form } = this.props;
-        form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                return callApiRegister(values).then(() => {
-                    const { history } = this.props;
-                    history.push('/user/login');
-                }).catch(() => {
-                    document.getElementById('msg').innerHTML = "Đăng ký thất bại";
-                })
+        form.validateFieldsAndScroll((error, values) => {
+            if (!error) {
+                const { actUpdateRequest } = this.props;
+                const body = {
+                    ...values,
+                    usertoken: localStorage.getItem('usertoken')
+                }
+                actUpdateRequest(body);
+                // eslint-disable-next-line no-shadow
+                setTimeout(() => {
+                    const { err, actLogout } = this.props;
+                    if (err === 400) {
+                        document.getElementById('msg').innerHTML = "Update thất bại";
+                    } else {
+                        actLogout();
+                        const { history } = this.props;
+                        history.push('/');
+                    }
+
+                }, 3000);
+
+
             }
-            return err;
-        });
+        })
     };
 
     validateToNextPassword = (rule, value, callback) => {
@@ -35,15 +47,6 @@ class RegistrationForm extends React.Component {
             form.validateFields(['confirm'], { force: true });
         }
         callback();
-    };
-
-    compareToFirstPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
-        } else {
-            callback();
-        }
     };
 
     normFile = e => {
@@ -63,7 +66,7 @@ class RegistrationForm extends React.Component {
                 style={{ backgroundColor: '#282c34' }}
             >
                 <div style={{ display: 'block' }}>
-                    <p className="hometitle">REGISTER</p>
+                    <p className="hometitle">UPDATE ACCOUNT</p>
                     <div className="btn">
                         <Form onSubmit={this.handleSubmit} className="register-form">
                             <p id="msg" style={{ color: 'red' }} />
@@ -90,12 +93,23 @@ class RegistrationForm extends React.Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator('password', {
+                                {getFieldDecorator('email', {
                                     rules: [
                                         {
-                                            required: true,
-                                            message: 'Please input your password!'
-                                        },
+                                            type: 'email',
+                                            message: 'The input is not valid E-mail!'
+                                        }
+                                    ]
+                                })(
+                                    <Input
+                                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                        placeholder="Email"
+                                    />
+                                )}
+                            </Form.Item>
+                            <Form.Item>
+                                {getFieldDecorator('password', {
+                                    rules: [
                                         {
                                             validator: this.validateToNextPassword
                                         }
@@ -109,46 +123,8 @@ class RegistrationForm extends React.Component {
                                 )}
                             </Form.Item>
                             <Form.Item>
-                                {getFieldDecorator('confirm', {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: 'Please confirm your password!'
-                                        },
-                                        {
-                                            validator: this.compareToFirstPassword
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                        type="password"
-                                        placeholder="Confirm Password"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
-                                {getFieldDecorator('email', {
-                                    rules: [
-                                        {
-                                            type: 'email',
-                                            message: 'The input is not valid E-mail!'
-                                        },
-                                        {
-                                            required: true,
-                                            message: 'Please input your E-mail!'
-                                        }
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                        placeholder="Email"
-                                    />
-                                )}
-                            </Form.Item>
-                            <Form.Item>
                                 <Button type="primary" htmlType="submit" className="register-form-button">
-                                    Register
+                                    Update
                                 </Button>
                             </Form.Item>
                         </Form>
@@ -159,9 +135,9 @@ class RegistrationForm extends React.Component {
     }
 }
 
-const Register = Form.create({ name: "register" })(
-    RegistrationForm
+const Update = Form.create({ name: "update" })(
+    UpdateForm
 );
 
-export default Register;
+export default Update;
 

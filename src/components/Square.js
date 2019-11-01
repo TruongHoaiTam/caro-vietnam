@@ -1,34 +1,56 @@
 import React from 'react';
-import { Button } from 'antd';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Square extends React.Component {
     render() {
-        const { isDetermined, isChoose, onClick, value } = this.props
-        if (isDetermined === false) {
-            if (isChoose) {
-                return (
-                    <Button type="primary" className="square choose" onClick={onClick}>
-                        <b className="fa fa-bold" aria-hidden="true">
-                            {value}
-                        </b>
-                    </Button>
-                );
-            }
+        const { isDetermined, isChoose, onClick, value } = this.props;
+        if (value === 'X' && isDetermined === true) {
             return (
-                <Button type="button" className="square" onClick={onClick}>
-                    <b className="fa fa-bold" aria-hidden="true">
-                        {value}
-                    </b>
-                </Button>
+                <button type="button" className="square x isDetermined" onClick={onClick}>
+                    {value}
+                </button>
+            );
+        }
+        if (value === 'X' && isDetermined === false && isChoose === false) {
+            return (
+                <button type="button" className="square x" onClick={onClick}>
+                    {value}
+                </button>
+            );
+        }
+        if (value === 'X' && isDetermined === false && isChoose === true) {
+            return (
+                <button type="button" className="square x isChoose" onClick={onClick}>
+                    {value}
+                </button>
+            );
+        }
+
+        if (value === 'O' && isDetermined === true) {
+            return (
+                <button type="button" className="square o isDetermined" onClick={onClick}>
+                    {value}
+                </button>
+            );
+        }
+        if (value === 'O' && isDetermined === false && isChoose === false) {
+            return (
+                <button type="button" className="square o" onClick={onClick}>
+                    {value}
+                </button>
+            );
+        }
+        if (value === 'O' && isDetermined === false && isChoose === true) {
+            return (
+                <button type="button" className="square o isChoose" onClick={onClick}>
+                    {value}
+                </button>
             );
         }
         return (
-            <Button type="danger" className="determinedSquare" onClick={onClick}>
-                <b className="fa fa-bold" aria-hidden="true">
-                    {value}
-                </b>
-            </Button>
+            <button type="button" className="square" onClick={onClick}>
+                {value}
+            </button>
         );
     }
 }
