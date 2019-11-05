@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-
 // eslint-disable-next-line react/prefer-stateless-function
 class Home extends React.Component {
+
     render() {
         const { username, actLogout, actGetUser, actCallbackLink } = this.props;
         actGetUser();
@@ -43,13 +43,14 @@ class Home extends React.Component {
                 </div>
             );
         }
+
         return (
             <div
                 className="container-login100"
                 style={{ backgroundColor: '#282c34' }}
             >
                 <div style={{ display: 'block' }}>
-                    <p className="hometitle">Caro VN</p>
+                    <p className="hometitle">Game Caro</p>
                     <p className="usernamehome">Hello, {username}!</p>
                     <br />
                     <div className="btn">
@@ -60,6 +61,17 @@ class Home extends React.Component {
                                 style={{ width: '100%' }}
                             >
                                 Play Game
+                            </Button>
+                        </Link>
+                        <br />
+                        <br />
+                        <Link to="/gameonline">
+                            <Button
+                                type="primary"
+                                size="large"
+                                style={{ width: '100%' }}
+                            >
+                                Play Game Online
                             </Button>
                         </Link>
                         <br />

@@ -3,7 +3,7 @@ import Game from "../components/Game";
 import { actInitState, actHandleClick, actJumpTo, actHandleSort } from '../actions/Game'
 
 const mapStateToProps = state => ({
-    history: state.Game.history,
+    _history: state.Game._history,
     stepNumber: state.Game.stepNumber,
     xIsNext: state.Game.xIsNext,
     reverse: state.Game.reverse,

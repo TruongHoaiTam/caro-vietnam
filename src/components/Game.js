@@ -42,7 +42,6 @@ class Game extends React.Component {
         this.stepChoose = 0;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     getAllIndexes(arr) {
         let minD = 19; let minC = 19; let maxD = 0; let maxC = 0;
         const indexes = [];
@@ -100,19 +99,19 @@ class Game extends React.Component {
 
     handleClick(i) {
         const { stepNumber, xIsNext } = this.props;
-        let { history } = this.props;
-        history = history.slice(0, stepNumber + 1);
+        let { _history } = this.props;
+        _history = _history.slice(0, stepNumber + 1);
 
 
-        const current = history[history.length - 1];
+        const current = _history[_history.length - 1];
         const squares = current.squares.slice();
         const winning = this.calculateWinner(squares, current.pos);
         if ((winning && winning[0]) || squares[i]) {
             return;
         }
 
-        if (history.length > 2) {
-            const beforeCurrent = history[history.length - 2];
+        if (_history.length > 2) {
+            const beforeCurrent = _history[_history.length - 2];
             const beforeSquares = current.squares.slice();
             const beforeWinning = this.calculateWinner(beforeSquares, beforeCurrent.pos);
             if ((beforeWinning && beforeWinning[0])) {
@@ -128,12 +127,11 @@ class Game extends React.Component {
         const bestPos = this.findBestMove(board); //
 
         actHandleClick({
-            squares, i, xIsNext, stepNumber, history, bestPos//
+            squares, i, xIsNext, stepNumber, _history, bestPos//
         });
-        this.stepChoose = history.length + 1;
+        this.stepChoose = _history.length + 1;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     listTraverse(values) {
         const list = [];
         for (let i = values.begin; i <= values.end; i += 1) {
@@ -289,26 +287,26 @@ class Game extends React.Component {
 
     render() {
         const { stepNumber, reverse, xIsNext } = this.props;
-        let { history } = this.props;
+        let { _history } = this.props;
 
         let current;
-        if (history.length >= 2) {
+        if (_history.length >= 2) {
 
-            const beforeCurrent = history[stepNumber - 1];
+            const beforeCurrent = _history[stepNumber - 1];
             const beforeWinner = this.calculateWinner(beforeCurrent.squares, beforeCurrent.pos);
 
             if (beforeWinner) {
-                history = history.slice(0, -1);
-                current = history[stepNumber - 1];
+                _history = _history.slice(0, -1);
+                current = _history[stepNumber - 1];
             } else {
-                current = history[stepNumber];
+                current = _history[stepNumber];
             }
         } else {
-            current = history[stepNumber];
+            current = _history[stepNumber];
         }
         const winner = this.calculateWinner(current.squares, current.pos);
 
-        let move = history.map((step, _move) => {
+        let move = _history.map((step, _move) => {
             const desc = _move
                 ? (step.xIsNext ? 'O ' : 'X ') + step.coordinates
                 : 'Go to game start';
@@ -356,9 +354,7 @@ class Game extends React.Component {
                     <p>{status}</p>
                     <Button
                         type="primary" size="large" shape="round"
-                        onClick={() => this.handlePlayAgain()}
                     >
-
                         <Link to="/">Home</Link>
                     </Button>
                     <Button

@@ -9,10 +9,12 @@ import '../index.css';
 // import Menu from './Menu';
 import Home from '../containers/Home';
 import Game from '../containers/Game';
+import GameOnline from '../containers/GameOnline';
 import Login from '../containers/Login';
 import Register from './Register';
 import Update from '../containers/Update';
 import NotFound from './NotFound';
+
 
 const Root = ({ store }) => (
     <Provider store={store}>
@@ -20,6 +22,7 @@ const Root = ({ store }) => (
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/game" component={Game} />
+                <Route path="/gameonline" component={GameOnline} />
                 <Route path="/user/login" component={Login} />
                 <Route path="/user/register" component={Register} />
                 <Route path="/user/update" component={Update} />

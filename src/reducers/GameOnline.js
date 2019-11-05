@@ -10,37 +10,36 @@ const defaultGame = {
     stepNumber: 0,
     reverse: false,
     xIsNext: true,
-    bestPos: null
+    whoIsNext: null,
+    players: null,
+
+    allowWin: false,
+    allowDraw: false,
+
+    usernames: null,
+    win: false,
+    draw: false
 }
 
-const game = (state = defaultGame, action) => {
+const gameOnline = (state = defaultGame, action) => {
     switch (action.type) {
         case 'INIT_STATE':
             state = defaultGame;
             return state;
         case 'HANDLE_CLICK':
             // eslint-disable-next-line no-case-declarations
-            const nextSquares = action.value.squares.slice();
-            nextSquares[action.value.bestPos] = "O";
             state = {
                 ...state,
                 _history: action.value._history.slice(0, action.value.stepNumber + 1).concat([
                     {
                         squares: action.value.squares,
                         pos: action.value.i,
-                        xIsNext: false,
+                        xIsNext: !action.value.xIsNext,
                         coordinates: "(".concat(action.value.i % 20, ", ").concat(Math.floor(action.value.i / 20), ")")
-                    },
-                    {
-                        squares: nextSquares,
-                        pos: action.value.bestPos,
-                        xIsNext: true,
-                        coordinates: "(".concat(action.value.bestPos % 20, ", ").concat(Math.floor(action.value.bestPos / 20), ")")
                     }
                 ]),
-                stepNumber: action.value._history.length + 1,
-                xIsNext: action.value.xIsNext,
-                bestPos: action.value.bestPos
+                stepNumber: action.value._history.length,
+                xIsNext: !action.value.xIsNext
             }
             return state;
         case 'JUMP_TO':
@@ -56,9 +55,40 @@ const game = (state = defaultGame, action) => {
                 reverse: !action.reverse
             }
             return state;
+        case 'PLAYERS':
+            state = {
+                ...state,
+                players: action.arr,
+                usernames: action.usernames
+            }
+            return state;
+        case 'SET_ALLOW_WIN':
+            state = {
+                ...state,
+                allowWin: true
+            }
+            return state;
+        case 'SET_ALLOW_DRAW':
+            state = {
+                ...state,
+                allowDraw: true
+            }
+            return state;
+        case 'SET_WIN':
+            state = {
+                ...state,
+                win: true
+            }
+            return state;
+        case 'SET_DRAW':
+            state = {
+                ...state,
+                draw: true
+            }
+            return state;
         default:
             return state;
     }
 }
 
-export default game;
+export default gameOnline;
