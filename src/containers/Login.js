@@ -1,12 +1,14 @@
 import { connect } from 'react-redux';
 import Login from '../components/Login';
-import { actLoginRequest, actGetUser, actLogout, actCallbackLink } from '../actions/Auth';
+import { actLoginRequest, actGetUser, actLogout, actCallbackLink, actLoginFacebookRequest, actLoginGoogleRequest } from '../actions/Auth';
 
 const mapStateToProps = state => ({
     username: state.Auth.username,
     usertoken: state.Auth.usertoken,
     err: state.Auth.err,
-    callbackLink: state.Auth.callbackLink
+    callbackLink: state.Auth.callbackLink,
+
+    token: state.Auth.token
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -25,7 +27,15 @@ const mapDispatchToProps = dispatch => ({
 
     actCallbackLink: link => {
         dispatch(actCallbackLink(link));
-    }
+    },
+
+    actLoginFacebookRequest: options => {
+        dispatch(actLoginFacebookRequest(options));
+    },
+
+    actLoginGoogleRequest: options => {
+        dispatch(actLoginGoogleRequest(options));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

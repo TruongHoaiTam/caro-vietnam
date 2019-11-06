@@ -1,4 +1,4 @@
-import { callApiLogin, callApiUpdate } from '../utils/apiCaller';
+import { callApiLogin, callApiUpdate, callApiLoginFacebook, callApiLoginGoogle } from '../utils/apiCaller';
 
 export const actLogin = user => ({
     type: 'LOGIN',
@@ -33,6 +33,41 @@ export const actLoginRequest = user => {
             });
     };
 };
+
+export const actSetStateLogin = values => ({
+    type: 'SET_STATE_LOGIN',
+    values
+});
+
+export const actLoginFacebookRequest = options => {
+    return dispatch => {
+        return callApiLoginFacebook(options)
+            .then(res => {
+                localStorage.setItem('username', res.data.user.username);
+                localStorage.setItem('email', res.data.user.email);
+                dispatch(actSetStateLogin({ user: res.data.user, token: res.data.token }))
+            })
+            .catch(() => {
+                dispatch(actLoginErr());
+            });
+    };
+};
+
+export const actLoginGoogleRequest = options => {
+    return dispatch => {
+        return callApiLoginGoogle(options)
+            .then(res => {
+                console.log(res)
+                localStorage.setItem('username', res.data.user.username);
+                localStorage.setItem('email', res.data.user.email);
+                dispatch(actSetStateLogin({ user: res.data.user, token: res.data.token }))
+            })
+            .catch(() => {
+                dispatch(actLoginErr());
+            });
+    };
+};
+
 
 export const actUpdateRequest = user => {
     return dispatch => {
@@ -72,3 +107,5 @@ export const actCallbackLink = link => ({
     type: 'CALLBACK_LINK',
     link
 });
+
+

@@ -7,6 +7,7 @@ class Home extends React.Component {
     render() {
         const { username, actLogout, actGetUser, actCallbackLink } = this.props;
         actGetUser();
+        console.log(username)
         if (username === undefined || username === "undefined" || username == null) {
             return (
                 <div

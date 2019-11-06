@@ -4,7 +4,9 @@ const initState = {
     avatar: undefined,
     usertoken: undefined,
     err: undefined,
-    callbackLink: undefined
+    callbackLink: undefined,
+
+    token: ''
 };
 
 export default function auth(state = initState, action) {
@@ -58,6 +60,18 @@ export default function auth(state = initState, action) {
             }
             return state;
         }
+        case 'SET_STATE_LOGIN': {
+            state = {
+                ...state,
+                token: action.values.token,
+
+                username: action.values.user.username,
+                email: action.values.user.email,
+                err: undefined
+            }
+            return state;
+        }
+
         default:
             return state;
     }

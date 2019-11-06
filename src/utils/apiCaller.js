@@ -2,6 +2,7 @@ import axios from 'axios';
 // eslint-disable-next-line camelcase
 const api_url = 'https://api-caro-vietnam.herokuapp.com';
 
+
 export function callApiLogin(body) {
     return axios({
         method: 'POST',
@@ -13,6 +14,28 @@ export function callApiLogin(body) {
         }
     });
 }
+
+export function callApiLoginFacebook(options) {
+    return axios({
+        method: 'POST',
+        // eslint-disable-next-line camelcase
+        url: `${api_url}/user/login/facebook`,
+        mode: 'cors',
+        data: options
+    });
+}
+
+export function callApiLoginGoogle(options) {
+    return axios({
+        method: 'POST',
+        // eslint-disable-next-line camelcase
+        url: `${api_url}/user/login/google`,
+        mode: 'cors',
+        data: options
+    });
+}
+
+
 export function callApiRegister(body) {
     return axios({
         method: 'POST',

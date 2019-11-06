@@ -1,14 +1,36 @@
 
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Icon } from 'antd';
+import { Form, Input, Button, Icon, Modal } from 'antd';
+import FacebookLogin from 'react-facebook-login';
+import { GoogleLogin } from 'react-google-login';
 import {
     Redirect,
     Link
 } from "react-router-dom";
 import '../index.css';
 
+
+
 class Login extends React.Component {
+
+    facebookResponse = (e) => {
+        const options = { access_token: e.accessToken }
+        const { actLoginFacebookRequest } = this.props;
+        actLoginFacebookRequest(options);
+    };
+
+    googleResponse = (e) => {
+        console.log(e)
+        const options = { access_token: e.accessToken }
+        const { actLoginGoogleRequest } = this.props;
+        actLoginGoogleRequest(options);
+    };
+
+    onFailure = (error) => {
+        const { info } = Modal;
+        info(error);
+    }
 
     handleSubmit = e => {
         const { form } = this.props;
@@ -28,13 +50,14 @@ class Login extends React.Component {
 
 
 
-        if (username && username !== "undefined") {
+        if ((username && username !== "undefined")) {
             if (callbackLink) return <Redirect to={callbackLink} />;
             return <Redirect to="/" />;
         }
         if (err === 400) {
             document.getElementById('msg').innerHTML = 'Đăng nhập thất bại';
         }
+
         return (
             <div
                 className="container-login100"
@@ -73,6 +96,22 @@ class Login extends React.Component {
 
                                 <Link to="/user/register">&nbsp;Register now!</Link>
                             </Form.Item>
+                            <div>
+                                <FacebookLogin
+                                    cssClass="btnFacebook"
+                                    appId="421347415482137"
+                                    autoLoad={false}
+                                    fields="name,email,picture"
+                                    callback={this.facebookResponse} />
+                                <br />
+                                <GoogleLogin
+                                    className="btnGoogle"
+                                    clientId="200927370909-1gm3rlh7h6d04ehleihltkk328canmt7.apps.googleusercontent.com"
+                                    buttonText="Login"
+                                    onSuccess={this.googleResponse}
+                                    onFailure={this.googleResponse}
+                                />
+                            </div>
                         </Form>
                     </div>
                 </div>
