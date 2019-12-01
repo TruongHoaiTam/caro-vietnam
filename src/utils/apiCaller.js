@@ -2,7 +2,6 @@ import axios from 'axios';
 // eslint-disable-next-line camelcase
 const api_url = 'https://api-caro-vietnam.herokuapp.com';
 
-
 export function callApiLogin(body) {
     return axios({
         method: 'POST',
